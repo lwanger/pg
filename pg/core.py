@@ -5,9 +5,15 @@ from math import copysign
 from .matrix import Matrix
 from . import glfw
 from . import util
-import cPickle as pickle
+
+if int(sys.version[0]) > 2:
+    import _pickle as pickle
+    import queue as Queue
+else:
+    import cPickle as pickle
+    import Queue
+
 import os
-import Queue
 import threading
 import time
 
