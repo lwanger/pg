@@ -127,7 +127,7 @@ def _glfw_get_version(filename):
     args = [sys.executable, '-c', textwrap.dedent(version_checker_source)]
     process = subprocess.Popen(args, universal_newlines=True,
                                stdin=subprocess.PIPE, stdout=subprocess.PIPE)
-    out = process.communicate(_to_char_p(filename))[0]
+    out = process.communicate(_to_char_p(filename).decode(sys.stdout.encoding))[0]
     out = out.strip()
     if out:
         return eval(out)
