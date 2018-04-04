@@ -9,6 +9,7 @@ from . import util
 if int(sys.version[0]) > 2:
     import _pickle as pickle
     import queue as Queue
+    xrange = range
 else:
     import cPickle as pickle
     import Queue
