@@ -3,14 +3,13 @@ from .util import normal_from_points
 
 import sys
 
-if int(sys.version[0]) > 2:
-    PYTHON3 = True
-    from itertools import zip_longest as izip_longest
+if sys.version_info.major > 2:
+    from itertools import zip_longest
 else:
-    PYTHON3 = False
     from itertools import izip_longest
 
-    import os
+
+import os
 
 def parse_obj(path):
     if os.path.exists(path):
@@ -30,23 +29,14 @@ def parse_obj(path):
         args = line.split()
         keyword = args[0]
         args = args[1:]
-        if keyword == 'v':   
-            if PYTHON3:
-                v = tuple([float(arg) for arg in args])
-            else:
-                v = tuple(map(float, args))
+        if keyword == 'v':
+            v = tuple(map(float, args))
             lu_v.append(v)
         elif keyword == 'vt':
-            if PYTHON3:
-                vt = tuple([float(arg) for arg in args])
-            else:
-                vt = tuple(map(float, args))
+            vt = tuple(map(float, args))
             lu_vt.append(vt)
         elif keyword == 'vn':
-            if PYTHON3:
-                vn = tuple([float(arg) for arg in args])
-            else:
-                vn = tuple(map(float, args))
+            vn = tuple(map(float, args))
             lu_vn.append(vn)
         elif keyword == 'f':
             data = [(x + '//').split('/')[:3] for x in args]
