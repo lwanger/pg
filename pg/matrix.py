@@ -3,6 +3,8 @@ from __future__ import division
 from math import sin, cos, tan, pi
 from .util import normalize
 
+from sys import version
+
 class Matrix(object):
     def __init__(self, value=None):
         if value is None:
@@ -12,7 +14,12 @@ class Matrix(object):
                 0, 0, 1, 0,
                 0, 0, 0, 1,
             ]
-        self.value = map(float, value)
+        
+        if int(sys.version[0]) > 2:
+            self.value = [float(v) for v in value]
+        else:
+            self.value = map(float, value)
+            
     def get_uniform_value(self):
         return self.value
     def __repr__(self):
