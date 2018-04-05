@@ -22,7 +22,7 @@ def parse_ascii_stl(data):
         args = line.strip().lower().split()
         if 'vertex' in args or 'normal' in args:
             if PYTHON3:
-                rows.append([float(arg) for arg in args[-3:]]
+                rows.append([float(arg) for arg in args[-3:]])
             else:
                 rows.append(tuple(map(float, args[-3:])))
     positions = []
