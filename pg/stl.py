@@ -4,8 +4,10 @@ from .util import normal_from_points
 import sys
 
 if int(sys.version[0]) > 2:
+        PYTHON3 = True
         from itertools import zip_longest as izip_longest
 else:
+        PYTHON3 = False
         from itertools import izip_longest
         
 import os
@@ -19,7 +21,10 @@ def parse_ascii_stl(data):
     for line in data.split('\n'):
         args = line.strip().lower().split()
         if 'vertex' in args or 'normal' in args:
-            rows.append(tuple(map(float, args[-3:])))
+            if PYTHON3:
+                rows.append([float(arg) for arg in args[-3:]]
+            else:
+                rows.append(tuple(map(float, args[-3:])))
     positions = []
     normals = []
     uvs = []
