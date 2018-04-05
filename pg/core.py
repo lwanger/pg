@@ -7,10 +7,12 @@ from . import glfw
 from . import util
 
 if int(sys.version[0]) > 2:
+    PYTHON3 = True
     import _pickle as pickle
     import queue as Queue
     xrange = range
 else:
+    PYTHON3 = False
     import cPickle as pickle
     import Queue
 
@@ -516,12 +518,21 @@ class Context(object):
             super(Context, self).__getattr__(name)
     def draw(self, mode=GL_TRIANGLES, index_buffer=None):
         self._program.use()
-        for name, value in self._uniform_values.iteritems():
-            if value is not None:
-                self._uniforms[name].bind(value)
-        for name, value in self._attribute_values.iteritems():
-            if value is not None:
-                self._attributes[name].bind(value)
+        
+        if PYTHON3:
+            for name, value in self._uniform_values.items():
+                if value is not None:
+                    self._uniforms[name].bind(value)
+            for name, value in self._attribute_values.items():
+                if value is not None:
+                    self._attributes[name].bind(value)
+        else:
+            for name, value in self._uniform_values.iteritems():
+                if value is not None:
+                    self._uniforms[name].bind(value)
+            for name, value in self._attribute_values.iteritems():
+                if value is not None:
+                    self._attributes[name].bind(value)
         if index_buffer is None:
             vertex_count = min(x.vertex_count for x in
                 self._attribute_values.itervalues() if x is not None)
@@ -530,9 +541,15 @@ class Context(object):
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer.handle)
             glDrawElements(mode, index_buffer.size, GL_UNSIGNED_INT, c_void_p())
             glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0)
-        for name, value in self._attribute_values.iteritems():
-            if value is not None:
-                self._attributes[name].unbind()
+        
+        if PYTHON3:
+            for name, value in self._attribute_values.items():
+                if value is not None:
+                    self._attributes[name].unbind()
+        else:
+            for name, value in self._attribute_values.iteritems():
+                if value is not None:
+                    self._attributes[name].unbind()
 
 class Scene(object):
     def __init__(self, window):
